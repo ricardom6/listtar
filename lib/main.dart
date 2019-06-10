@@ -19,10 +19,18 @@ class _HomeState extends State<Home> {
   final _toDoController = TextEditingController();
 
 
-  List _toDoList = [
-    //"Tarefa A", "Tarefa B",
-    //"Tarefa C", "Tarefa D",
-  ];
+  List _toDoList = [];
+
+  Map<String, dynamic> _ultimaTarefaRemovida;
+  int _ultimaTarefaRemovidaPosi
+
+  ç
+
+  ã
+
+  o
+
+  ;
 
   @override
   void initState() {
@@ -72,7 +80,21 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildItemCheckboxListTile(context, index) {
-    return null;
+    return CheckboxListTile(
+      title: Text(_toDoList[index]["titulo"]),
+      value: _toDoList[index]["status"],
+      secondary: CircleAvatar(
+        child: Icon(
+            _toDoList[index]["status"] ?
+            Icons.thumb_up : Icons.thumb_down),
+      ),
+      onChanged: (value) {
+        setState(() {
+          _toDoList[index]["status"] = value;
+          _saveData();
+        });
+      },
+    );
   }
 
   @override
@@ -129,21 +151,17 @@ class _HomeState extends State<Home> {
             ),
           ),
           direction: DismissDirection.startToEnd,
-          child: CheckboxListTile(
-            title: Text(_toDoList[index]["titulo"]),
-            value: _toDoList[index]["status"],
-            secondary: CircleAvatar(
-              child: Icon(
-                  _toDoList[index]["status"] ?
-                  Icons.thumb_up : Icons.thumb_down),
-            ),
-            onChanged: (value) {
-              setState(() {
-                _toDoList[index]["status"] = value;
-                _saveData();
-              });
-            },
-          ),
+          child: buildItemCheckboxListTile(context, index),
+          onDismissed: (direction) {
+            setState(() {
+              _ultimaTarefaRemovida = Map.from(_toDoList[index]);
+              _ultimaTarefaRemovidaPosiçã
+              o = index;
+              _toDoList.removeAt(index);
+              _saveData();
+            });
+          },
+
         );
       },
     );
