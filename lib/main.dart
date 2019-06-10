@@ -71,6 +71,10 @@ class _HomeState extends State<Home> {
     return File("${directory.path}/dados_tarefa.json");
   }
 
+  Widget buildItemCheckboxListTile(context, index) {
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     //configurando o appBar
@@ -95,7 +99,7 @@ class _HomeState extends State<Home> {
     );
 
     //pag 82
-    //configurando a linha do input e button
+    // configurando a linha do input e button
     Row row = Row(
       children: <Widget>[
         Expanded(child: textField),
@@ -111,21 +115,35 @@ class _HomeState extends State<Home> {
     ListView listViewTarefas = ListView.builder(
       padding: EdgeInsets.only(top:10.0),
       itemCount: _toDoList.length,
-      itemBuilder: (context, index){
-        return CheckboxListTile(
-          title: Text(_toDoList[index]["titulo"]),
-          value: _toDoList[index]["status"],
-          secondary: CircleAvatar(
-            child: Icon(
-                _toDoList[index]["status"] ?
-                Icons.thumb_up : Icons.thumb_down),
+      itemBuilder: (context, index) {
+        return Dismissible(
+          key: Key(DateTime
+              .now()
+              .millisecondsSinceEpoch
+              .toString()),
+          background: Container(
+            color: Colors.red,
+            child: Align(
+              alignment: Alignment(-0.9, 0.0),
+              child: Icon(Icons.delete, color: Colors.white),
+            ),
           ),
-          onChanged: (value) {
-            setState(() {
-              _toDoList[index]["status"] = value;
-              _saveData();
-            });
-          },
+          direction: DismissDirection.startToEnd,
+          child: CheckboxListTile(
+            title: Text(_toDoList[index]["titulo"]),
+            value: _toDoList[index]["status"],
+            secondary: CircleAvatar(
+              child: Icon(
+                  _toDoList[index]["status"] ?
+                  Icons.thumb_up : Icons.thumb_down),
+            ),
+            onChanged: (value) {
+              setState(() {
+                _toDoList[index]["status"] = value;
+                _saveData();
+              });
+            },
+          ),
         );
       },
     );
