@@ -23,6 +23,19 @@ class _HomeState extends State<Home> {
     //"Tarefa A", "Tarefa B",
     //"Tarefa C", "Tarefa D",
   ];
+
+  @override
+  void initState() {
+    //TODO: implement initState
+    super.initState();
+    _readData().then((data) {
+      setState(() {
+        _toDoList = json.decode(data);
+      });
+    }); //não entendi,
+  }
+
+
   void _addToDo(){
     setState(() {
       Map<String, dynamic> newToDo = Map();
@@ -31,6 +44,7 @@ class _HomeState extends State<Home> {
       newToDo["status"] = false;
       newToDo["inicio"] = formatDate(DateTime.now(), [dd, '/', mm, '/', yyyy ]);
       _toDoList.add(newToDo);
+      _saveData();
     });
   }
 
@@ -100,10 +114,18 @@ class _HomeState extends State<Home> {
       itemBuilder: (context, index){
         return CheckboxListTile(
           title: Text(_toDoList[index]["titulo"]),
-          value: false,
+          value: _toDoList[index]["status"],
           secondary: CircleAvatar(
-            child: Icon(Icons.check),
+            child: Icon(
+                _toDoList[index]["status"] ?
+                Icons.thumb_up : Icons.thumb_down),
           ),
+          onChanged: (value) {
+            setState(() {
+              _toDoList[index]["status"] = value;
+              _saveData();
+            });
+          },
         );
       },
     );
