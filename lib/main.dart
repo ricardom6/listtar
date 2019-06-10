@@ -20,9 +20,8 @@ class _HomeState extends State<Home> {
 
 
   List _toDoList = [
-    "Tarefa A", "Tarefa B",
-    "Tarefa C", "Tarefa D",
-    "Tarefa E", "Tarefa F",
+    //"Tarefa A", "Tarefa B",
+    //"Tarefa C", "Tarefa D",
   ];
   void _addToDo(){
     setState(() {
